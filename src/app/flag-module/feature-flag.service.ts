@@ -5,6 +5,15 @@ import {
   debounceTime, map, take
 } from 'rxjs/operators';
 
+@Injectable({ providedIn: 'root' })
+export class MockFeatureFlag {
+  isOn$ = new BehaviorSubject(false);
+
+  toggle() {
+    this.isOn$.pipe(take(1)).subscribe((on) => this.isOn$.next(!on));
+  }
+}
+
 export interface FeatureFlags {
   checkIsOn(flag: string): Observable<boolean>;
 }
@@ -24,14 +33,6 @@ export class FeatureFlagService implements FeatureFlags {
   }
 }
 
-@Injectable({ providedIn: 'root' })
-export class MockFeatureFlag {
-  isOn$ = new BehaviorSubject(false);
-
-  toggle() {
-    this.isOn$.pipe(take(1)).subscribe((on) => this.isOn$.next(!on));
-  }
-}
 
 // an actual implementation that refreshes the FeatureFlags on app start
 @Injectable({
