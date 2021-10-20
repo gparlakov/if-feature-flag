@@ -6,7 +6,6 @@ import { FeatureFlagService } from './feature-flag.service';
   selector: '[ifFeature]',
 })
 export class IfFeatureFlagDirective<IfTemplate, ElseTemplate> {
-  constructedForFlag?: string;
   elseTemplate?: TemplateRef<ElseTemplate>;
   flag?: string;
 
@@ -38,13 +37,10 @@ export class IfFeatureFlagDirective<IfTemplate, ElseTemplate> {
       this.viewContainerRef.clear();
       if (on) {
         this.viewContainerRef.createEmbeddedView(this.template);
-        this.constructedForFlag = this.flag;
       } else if (this.elseTemplate != null) {
         this.viewContainerRef.createEmbeddedView(this.elseTemplate);
-        this.constructedForFlag = this.flag;
       } else {
         this.viewContainerRef.clear();
-        this.constructedForFlag = undefined;
       }
     });
   }
